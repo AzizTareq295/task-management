@@ -9,10 +9,14 @@ import {
 } from 'Pages'
 import ProtectedRoute from './ProtectedRoute'
 import WithAuth from 'Components/Layouts/WithAuth'
+import PublicRoute from './PublicRoute'
 
 const AllRoutes: React.FC = () => {
   return (
     <Routes>
+      <Route path="/" element={<PublicRoute />}>
+        <Route index element={<LoginPage />} />
+      </Route>
       <Route path='/' element={<ProtectedRoute />}>
         <Route element={<WithAuth />}>
           <Route path='dashboard' element={<DashboardPage />} />
@@ -20,7 +24,6 @@ const AllRoutes: React.FC = () => {
           <Route path='members' element={<MembersPage />} />
         </Route>
       </Route>
-      <Route path='/login' element={<LoginPage />} />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   )

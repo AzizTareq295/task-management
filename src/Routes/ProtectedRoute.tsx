@@ -1,10 +1,12 @@
 import React from 'react'
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 const ProtectedRoute: React.FC = () => {
-  const token = localStorage.getItem("token");
+  const location = useLocation();
+  const token = localStorage.getItem("tokens");
   const auth = token && token !== "undefined" ? true : false;
-  return auth ? <Navigate to="/dashboard" /> : <Outlet />;
+  
+  return auth ? <Outlet /> : <Navigate to="/" state={{ from: location }} replace />;
 }
 
 export default ProtectedRoute
