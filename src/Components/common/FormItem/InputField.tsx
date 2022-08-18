@@ -14,13 +14,8 @@ const useStyles = makeStyles({
 
 type InputFieldProps = {
   label: string,
-  name: string,
   value?: string,
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void,
-  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void,
-  onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void,
-  error?: boolean,
-  helperText?: string,
+  errorMessage?: string | undefined,
   type?: string,
   disabled?: boolean,
   required?: boolean,
@@ -31,16 +26,13 @@ type InputFieldProps = {
   fullWidth?: boolean,
   min?: number,
   max?: number,
+  register?: any,
 }
 
 const InputField: React.FC<InputFieldProps> = ({
   label,
-  name,
   value,
-  onChange,
-  onBlur,
-  onKeyPress,
-  error,
+  errorMessage,
   type = 'text',
   disabled = false,
   required = false,
@@ -51,8 +43,8 @@ const InputField: React.FC<InputFieldProps> = ({
   fullWidth = true,
   min,
   max,
+  register
 }) => {
-
   const classes = useStyles();
 
   let inputProps = {}
@@ -64,24 +56,24 @@ const InputField: React.FC<InputFieldProps> = ({
     }
   }
 
+  let getError = errorMessage ? true : false;
+
   return (
     <TextField 
       className={`${classes.inputField}`}
       label={label} 
-      name={name}
       variant={variant} 
       size={size}
       type={type}
-      onChange={onChange}
-      onBlur={onBlur}
-      onKeyPress={onKeyPress}
       value={value}
       multiline={multiline}
       disabled={disabled}
       required={required}
       fullWidth={fullWidth}
       sx={styles}
-      error={error}
+      error={getError}
+      helperText={errorMessage}
+      {...register}
       InputProps={{
         inputProps: {
           ...inputProps,
