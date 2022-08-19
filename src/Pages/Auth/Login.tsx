@@ -3,6 +3,9 @@ import { Box, Button, Grid, Paper, Typography } from '@mui/material'
 import InputField from 'Components/common/FormItem/InputField'
 import { makeStyles } from '@mui/styles'
 import { useForm } from "react-hook-form";
+import { IUser } from 'Components/interface/User';
+import { authentication } from './slice/AuthAction';
+import { useAppDispatch } from 'Hooks/reduxHelper';
 
 const useStyles = makeStyles({
   container: {
@@ -13,15 +16,27 @@ const useStyles = makeStyles({
   }
 })
 
+
+
 const Login: React.FC = () => {
 
   const classes = useStyles()
 
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const dispatch = useAppDispatch()
 
-  const onSubmit = (data:any) => console.log(data);
+  const { register, handleSubmit, setError, formState: { errors } } = useForm<IUser>();
 
-  console.log(errors)
+  const onSubmit = (data:IUser) => {
+    if (data.username === 'admin' && data.password === 'admin') {
+      dispatch(authentication(data))
+    }
+    else{
+      setError("username", {
+        type: "manual",
+        message: "Username or password is incorrect"
+      });
+    }
+  }
 
   return (
     <Box >
@@ -34,9 +49,9 @@ const Login: React.FC = () => {
                 <Grid item xs={12}>
                   <InputField
                     label="Username"
-                    register={register("username", { required: {value: true, message: "Username is required"}, })}
+                    register={register("username", { required: {value: true, message: "Username is required"} })}
                     type='text'
-                    errorMessage={errors!.username!.message}
+                    errors={errors?.username}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -44,7 +59,7 @@ const Login: React.FC = () => {
                     label="Password"
                     type='password'
                     register={register("password", { required: {value: true, message: "Password is required"} })}
-                    errorMessage={errors!.password!.message}
+                    errors={errors?.password}
                   />
                 </Grid>
                 <Grid item xs={12} textAlign="right">

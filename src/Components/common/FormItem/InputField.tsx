@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 type InputFieldProps = {
   label: string,
   value?: string,
-  errorMessage?: string | undefined,
+  errors?: any,
   type?: string,
   disabled?: boolean,
   required?: boolean,
@@ -32,7 +32,7 @@ type InputFieldProps = {
 const InputField: React.FC<InputFieldProps> = ({
   label,
   value,
-  errorMessage,
+  errors,
   type = 'text',
   disabled = false,
   required = false,
@@ -56,7 +56,7 @@ const InputField: React.FC<InputFieldProps> = ({
     }
   }
 
-  let getError = errorMessage ? true : false;
+  // let getError = errors ? true : false;
 
   return (
     <TextField 
@@ -71,8 +71,8 @@ const InputField: React.FC<InputFieldProps> = ({
       required={required}
       fullWidth={fullWidth}
       sx={styles}
-      error={getError}
-      helperText={errorMessage}
+      error={errors}
+      helperText={errors?.message}
       {...register}
       InputProps={{
         inputProps: {

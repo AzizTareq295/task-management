@@ -1,11 +1,11 @@
 import React from 'react'
+import { useAppSelector } from 'Hooks/reduxHelper';
 import { Navigate, Outlet } from 'react-router-dom';
 
 const PublicRoute: React.FC = () => {
-  const token = localStorage.getItem("tokens");
-  const auth = token && token !== "undefined" ? true : false;
+  const { isAuthenticated } = useAppSelector(state => state.auth)
   
-  return !auth ? <Outlet /> : <Navigate to="/dashboard" />;
+  return !isAuthenticated ? <Outlet /> : <Navigate to="/dashboard" />;
 }
 
 export default PublicRoute
